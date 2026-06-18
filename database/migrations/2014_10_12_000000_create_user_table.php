@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('role', [0, 1, 2])->default(0);
             $table->boolean('status');
             $table->string('password');
-            $table->string('hp', 13 );
+            $table->string('hp', 13 )->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();
         });

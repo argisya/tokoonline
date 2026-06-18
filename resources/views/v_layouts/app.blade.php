@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must
-come *after* these tags -->
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon_univ_bsi.png') }}">
     <title>tokoonline</title>
     <!-- Google font -->
@@ -31,6 +30,10 @@ come *after* these tags -->
 </head>
 
 <body>
+    @php
+        $kategori = DB::table('kategori')->orderBy('nama_kategori', 'asc')->get();
+    @endphp
+
     <!-- HEADER -->
     <header>
         <!-- top Header -->
@@ -60,7 +63,7 @@ come *after* these tags -->
                     <ul class="header-btns">
                         <!-- Cart -->
                         <li class="header-cart dropdown default-dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" aria- expanded="true">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ariaexpanded="true">
                                 <div class="header-btns-icon">
                                     <i class="fa fa-shopping-cart"></i>
                                 </div>
@@ -68,44 +71,45 @@ come *after* these tags -->
                             </a>
                         </li>
                         <!-- /Cart -->
-                         @if (Auth::check()) 
-                        <!-- Account -->
-                        <li class="header-account dropdown default-dropdown"> 
-                            <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true"> 
-                                <div class="header-btns-icon"> 
-                                    <i class="fa fa-user-o"></i> 
-                                </div> 
-                                <strong class="text-uppercase">{{ Auth::user()->nama }}<i 
-                                        class="fa fa-caret-down"></i></strong> 
-                            </div> 
-                            <ul class="custom-menu"> 
-                                <li><a href="{{ route('customer.akun', ['id' => Auth::user()->id]) }}"><i class="fa fa-user-o"><i class="fa fa-user-o"></i> Akun Saya</a></li> 
-                                <li><a href="#"><i class="fa fa-check"></i> History</a></li> 
-                                <li> 
-                                    <a href="#" 
-                                                   onclick="event.preventDefault(); document.getElementById('keluar-app').submit();"><i class="fa fa-power-off"></i> Keluar 
-                                                </a> 
-                                                <!-- form keluar app --> 
-                                                <form id="keluar-app" action="{{ route('customer.logout') }}" method="POST" 
-                                    class="d-none"> 
-                                                    @csrf 
-                                                </form> 
-                                                <!-- form keluar app end --> 
-                                            </li> 
-                                        </ul> 
-                                    </li> 
-                                    @else 
-                                    <li class="header-account dropdown default-dropdown"> 
-                                        <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true"> 
-                                            <div class="header-btns-icon"> 
-                                                <i class="fa fa-user-o"></i> 
-                                            </div> 
-                                            <strong class="text-uppercase">Akun Saya<i class="fa fa-caret-down"></i></strong> 
-                                        </div> 
-                                        <a href="{{ route('auth.redirect') }}" class="text-uppercase">Login</a> 
-                                    </li> 
-                                    <!-- /Account --> 
-                                    @endif 
+                        @if (Auth::check())
+                            <!-- Account -->
+                            <li class="header-account dropdown default-dropdown">
+                                <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+                                    <div class="header-btns-icon">
+                                        <i class="fa fa-user-o"></i>
+                                    </div>
+                                    <strong class="text-uppercase">{{ Auth::user()->nama }}<i
+                                            class="fa fa-caret-down"></i></strong>
+                                </div>
+                                <ul class="custom-menu">
+                                    <li><a href="{{ route('customer.akun', ['id' => Auth::user()->id]) }}"><i class="fa fa-user-o"></i> Akun Saya</a></li>
+                                    <li><a href="#"><i class="fa fa-check"></i> History</a></li>
+                                    <li>
+                                        <a href="#"
+                                            onclick="event.preventDefault(); document.getElementById('keluarapp').submit();"><i
+                                                class="fa fa-power-off"></i> Keluar
+                                        </a>
+                                        <!-- form keluar app -->
+                                        <form id="keluar-app" action="{{ route('logout') }}" method="POST"
+                                            class="dnone">
+                                            @csrf
+                                        </form>
+                                        <!-- form keluar app end -->
+                                    </li>
+                                </ul>
+                            </li>
+                        @else
+                            <li class="header-account dropdown default-dropdown">
+                                <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+                                    <div class="header-btns-icon">
+                                        <i class="fa fa-user-o"></i>
+                                    </div>
+                                    <strong class="text-uppercase">Akun Saya<i class="fa fa-caret-down"></i></strong>
+                                </div>
+                                <a href="{{ route('auth.redirect') }}" class="text-uppercase">Login</a>
+                            </li>
+                            <!-- /Account -->
+                        @endif
                         <!-- Mobile nav toggle-->
                         <li class="nav-toggle">
                             <button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
@@ -119,6 +123,7 @@ come *after* these tags -->
         <!-- container -->
     </header>
     <!-- /HEADER -->
+
     <!-- NAVIGATION -->
     <div id="navigation">
         <!-- container -->
@@ -127,25 +132,19 @@ come *after* these tags -->
                 @if (request()->segment(1) == '' || request()->segment(1) == 'beranda')
                     <!-- category nav -->
                     <div class="category-nav">
-                        <span class="category-header">Kategori <i class="fa fa-list"></i></span>
+                        <span class="category-header">Kategori <i class="fa falist"></i></span>
                         <ul class="category-list">
-                            @php
-                                $kategori = DB::table('kategori')->orderBy('nama_kategori', 'asc')->get();
-                            @endphp
                             @foreach ($kategori as $row)
-                                <li><a href="{{ route('produk.kategori', $row->id) }}">{{ $row->nama_kategori }}</a>
-                                </li>
+                                <li><a href="{{ route('produk.kategori', $row->id) }}">{{ $row->nama_kategori }}</a></li>
                             @endforeach
                         </ul>
-                        <ul class="category-list">
                     </div>
                 @else
                     <div class="category-nav show-on-click">
-                        <span class="category-header">Kategori <i class="fa fa-list"></i></span>
+                        <span class="category-header">Kategori <i class="fa falist"></i></span>
                         <ul class="category-list">
                             @foreach ($kategori as $row)
-                                <li><a href="{{ route('produk.kategori', $row->id) }}">{{ $row->nama_kategori }}</a>
-                                </li>
+                                <li><a href="{{ route('produk.kategori', $row->id) }}">{{ $row->nama_kategori }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -236,7 +235,7 @@ come *after* these tags -->
                             <div class="product-body">
                                 <h2 class="product-name"><a href="#">Product Name Goes
                                         Here</a></h2>
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+                                <h3 class="product-price">$32.50 <del class="product-oldprice">$45.00</del></h3>
                                 <div class="product-rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -337,7 +336,7 @@ come *after* these tags -->
                             <li><a href="#">My Wishlist</a></li>
                             <li><a href="#">Compare</a></li>
                             <li><a href="#">Checkout</a></li>
-                            <li><a href="{{ route('auth.redirect')}}" class="text-uppercase">Login</a></li>
+                            <li><a href="#">Login</a></li>
                         </ul>
                     </div>
                 </div>
